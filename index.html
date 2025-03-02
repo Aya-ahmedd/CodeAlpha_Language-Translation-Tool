@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translator</title>
+</head>
+<body>
+    <h2>Language Translation Tool</h2>
+    <textarea id="inputText" placeholder="Enter text..."></textarea>
+    <select id="language">
+        <option value="fr">French</option>
+        <option value="es">Spanish</option>
+        <option value="de">German</option>
+    </select>
+    <button onclick="translateText()">Translate</button>
+    <p><strong>Translation:</strong> <span id="outputText"></span></p>
+
+    <script>
+        function translateText() {
+            let text = document.getElementById("inputText").value;
+            let targetLanguage = document.getElementById("language").value;
+
+            fetch("/translate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text, target_language: targetLanguage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("outputText").innerText = data.translated_text;
+            });
+        }
+    </script>
+</body>
+</html>
